@@ -41,8 +41,8 @@
 ### 1. 克隆项目
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/todo-kanban.git
-cd todo-kanban
+git clone https://github.com/bitini111/todo.git
+cd todo
 ```
 
 ### 2. 配置数据库
@@ -153,7 +153,7 @@ curl http://localhost:8080/api/report \
 ## 📁 项目结构
 
 ```
-todo-kanban/
+todo/
 ├── src/                    # 前端源码
 │   ├── components/         # React 组件
 │   │   ├── KanbanColumn.jsx    # 看板列
