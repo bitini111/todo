@@ -1,0 +1,34 @@
+# 忽略编译产物
+server/todo
+server/todo-server.exe
+server/todo.exe
+server/todo_linux
+server/*.exe
+
+# 忽略依赖
+node_modules/
+server/vendor/
+
+# 忽略构建产物
+dist/
+build/
+
+# 忽略环境变量
+server/.env
+
+# 忽略上传的模板
+server/uploads/template.xlsx
+
+# 忽略 IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 忽略 OS 文件
+.DS_Store
+Thumbs.db
+
+# 忽略 Go 二进制
+**/*.exe
+**/todo
