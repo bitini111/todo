@@ -22,6 +22,7 @@ server/uploads/template.xlsx
 # 忽略 IDE 配置
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 
