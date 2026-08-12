@@ -1,6 +1,7 @@
 # Todo 待办系统
 
 一个全栈待办事项管理应用，支持拖拽看板、周报导出（Excel/CSV）、任务优先级管理。
+![Todo 待办系统](docs/screenshots/screenshot-kanban.png)
 
 ![React](https://img.shields.io/badge/React-19-blue)
 ![Go](https://img.shields.io/badge/Go-1.24-green)
