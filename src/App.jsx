@@ -57,6 +57,7 @@ function KanbanApp() {
   const { tasks, loading, error, editingId, addTask, updateTask, deleteTask, cancelEdit } = useTodos()
 
   const [editingIdLocal, setEditingIdLocal] = useState(null)
+  const [isAdding, setIsAdding] = useState(false) // track if we're adding a new task
   const [activeId, setActiveId] = useState(null)
   const [taskColumns, setTaskColumns] = useState({})
   const [showAllCompleted, setShowAllCompleted] = useState(false)
@@ -102,16 +103,6 @@ function KanbanApp() {
   const done     = shownCompleted.length
   const rate     = total === 0 ? '0%' : Math.round((done / total) * 100) + '%'
 
-  const handleAdd = useCallback(async (title, description, status, priority) => {
-    await addTask(title, description, status, priority)
-    setEditingIdLocal(null)
-  }, [addTask])
-
-  const handleUpdate = useCallback(async (id, updates) => {
-    await updateTask(id, updates)
-    setEditingIdLocal(null)
-  }, [updateTask])
-
   const handleDelete = useCallback(async (id) => {
     if (window.confirm('确定要删除该任务吗？')) await deleteTask(id)
   }, [deleteTask])
@@ -120,8 +111,27 @@ function KanbanApp() {
     await updateTask(id, { status })
   }, [updateTask])
 
-  const startEditForm = useCallback((id) => setEditingIdLocal(id), [])
-  const cancelForm = useCallback(() => { setEditingIdLocal(null); cancelEdit() }, [cancelEdit])
+  const handleAdd = useCallback(async (title, description, status, priority) => {
+    await addTask(title, description, status, priority)
+    setEditingIdLocal(null)
+    setIsAdding(false)
+  }, [addTask])
+
+  const handleUpdate = useCallback(async (id, updates) => {
+    await updateTask(id, updates)
+    setEditingIdLocal(null)
+  }, [updateTask])
+
+  const startEditForm = useCallback((id) => {
+    if (id === null) {
+      setIsAdding(true)
+      setEditingIdLocal(null)
+    } else {
+      setEditingIdLocal(id)
+      setIsAdding(false)
+    }
+  }, [])
+  const cancelForm = useCallback(() => { setEditingIdLocal(null); setIsAdding(false); cancelEdit() }, [cancelEdit])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -221,7 +231,7 @@ function KanbanApp() {
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-6">
             <aside className="flex flex-col gap-5">
-              {!isEditing && (
+              {!isEditing && !isAdding && (
                 <TaskForm
                   editingId={null}
                   tasks={tasks}
@@ -269,8 +279,8 @@ function KanbanApp() {
         </DragOverlay>
       </div>
 
-      {/* Edit modal — inside DndContext but z-50 so it renders above */}
-      {isEditing && (
+      {/* Edit/Add modal — inside DndContext but z-50 so it renders above */}
+      {(isEditing || isAdding) && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
           onClick={cancelForm}
